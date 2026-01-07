@@ -208,7 +208,6 @@ __marimo__/
 
 
 #Ignore vscode AI rules
-.github/
 
 browser_data/
 data/
