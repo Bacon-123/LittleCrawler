@@ -21,11 +21,7 @@ class PlatformEnum(str, Enum):
     """Supported media platform enumeration"""
 
     XHS = "xhs"
-    DOUYIN = "dy"
-    KUAISHOU = "ks"
-    BILIBILI = "bili"
-    WEIBO = "wb"
-    TIEBA = "tieba"
+    XHY = "xhy"
     ZHIHU = "zhihu"
 
 
@@ -258,26 +254,10 @@ async def parse_cmd(argv: Optional[Sequence[str]] = None):
         if specified_id_list:
             if platform == PlatformEnum.XHS:
                 config.XHS_SPECIFIED_NOTE_URL_LIST = specified_id_list
-            elif platform == PlatformEnum.BILIBILI:
-                config.BILI_SPECIFIED_ID_LIST = specified_id_list
-            elif platform == PlatformEnum.DOUYIN:
-                config.DY_SPECIFIED_ID_LIST = specified_id_list
-            elif platform == PlatformEnum.WEIBO:
-                config.WEIBO_SPECIFIED_ID_LIST = specified_id_list
-            elif platform == PlatformEnum.KUAISHOU:
-                config.KS_SPECIFIED_ID_LIST = specified_id_list
 
         if creator_id_list:
             if platform == PlatformEnum.XHS:
                 config.XHS_CREATOR_ID_LIST = creator_id_list
-            elif platform == PlatformEnum.BILIBILI:
-                config.BILI_CREATOR_ID_LIST = creator_id_list
-            elif platform == PlatformEnum.DOUYIN:
-                config.DY_CREATOR_ID_LIST = creator_id_list
-            elif platform == PlatformEnum.WEIBO:
-                config.WEIBO_CREATOR_ID_LIST = creator_id_list
-            elif platform == PlatformEnum.KUAISHOU:
-                config.KS_CREATOR_ID_LIST = creator_id_list
 
         return SimpleNamespace(
             platform=config.PLATFORM,
