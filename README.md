@@ -1,23 +1,42 @@
 # LittleCrawler
 
-基于 Python 异步编程的多平台社交媒体爬虫框架。
+<p align="center">
+  <b>基于 Python 异步编程的多平台社交媒体爬虫框架</b>
+</p>
 
-## 支持平台
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/Playwright-1.45+-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
+  <img src="https://img.shields.io/badge/FastAPI-0.115+-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/Next.js-14+-000000?style=flat-square&logo=next.js&logoColor=white" alt="Next.js">
+  <img src="https://img.shields.io/badge/NextUI-2.0+-000000?style=flat-square&logo=nextui&logoColor=white" alt="NextUI">
+  <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License">
+</p>
 
-| 平台   | 代号    | 功能               |
-| ------ | ------- | ------------------ |
-| 小红书 | `xhs`   | 笔记、详情、作者   |
-| 小黄鱼 | `xhy`   | 商品、笔记、作者、 |
-| 知乎   | `zhihu` | 文章、详情、作者   |
+<p align="center">
+  <img src="https://img.shields.io/badge/小红书-FF2442?style=flat-square&logo=xiaohongshu&logoColor=white" alt="小红书">
+  <img src="https://img.shields.io/badge/知乎-0084FF?style=flat-square&logo=zhihu&logoColor=white" alt="知乎">
+  <img src="https://img.shields.io/badge/小黄鱼-FFD700?style=flat-square&logo=firefish&logoColor=black" alt="小黄鱼,闲鱼">
+</p>
 
-## 快速开始
+---
 
-### 环境要求
+## 🌐 支持平台
+
+| 平台   | 代号    | 功能             |
+| ------ | ------- | ---------------- |
+| 小红书 | `xhs`   | 笔记、详情、作者 |
+| 小黄鱼 | `xhy`   | 商品、笔记、作者 |
+| 知乎   | `zhihu` | 文章、详情、作者 |
+
+## 🚀 快速开始
+
+### 📦 环境要求
 
 - Python >= 3.11
 - [uv](https://github.com/astral-sh/uv) (推荐) 或 pip
 
-### 安装
+### 📥 安装
 
 ```bash
 # 克隆项目
@@ -33,7 +52,7 @@ pip install -r requirements.txt
 playwright install chromium
 ```
 
-### 运行
+### ▶️ 运行
 
 ```bash
 # 默认运行（使用 config/base_config.py 配置）
@@ -46,7 +65,7 @@ python main.py --platform xhs --type search
 python main.py --init-db sqlite
 ```
 
-### Web
+### 🖥️ Web 后台
 
 ```bash
 
@@ -71,7 +90,26 @@ cd ./web &&  npm run dev
 
 ```
 
-### 命令工具
+## 📸 界面预览
+
+<table>
+  <tr>
+    <td align="center"><b>🔐 登录页面</b></td>
+    <td align="center"><b>🚀 启动配置</b></td>
+  </tr>
+  <tr>
+    <td><img src="docs/images/login.jpg" width="400" alt="登录页面"></td>
+    <td><img src="docs/images/start.jpg" width="400" alt="启动配置"></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2"><b>📊 运行状态</b></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><img src="docs/images/run.jpg" width="700" alt="运行状态"></td>
+  </tr>
+</table>
+
+### 🛠️ 命令工具
 
 ```bash
 
@@ -84,7 +122,7 @@ uv run python main.py --help
 
 ```
 
-## 配置说明
+## ⚙️ 配置说明
 
 编辑 `config/base_config.py`：
 
@@ -98,7 +136,7 @@ ENABLE_CDP_MODE = True     # CDP模式（推荐，反检测更强）
 ENABLE_IP_PROXY = False    # 是否启用代理
 ```
 
-## 项目结构
+## 📁 项目结构
 
 ```
 ├── main.py                  # 程序入口
@@ -127,7 +165,7 @@ ENABLE_IP_PROXY = False    # 是否启用代理
 └── libs/                    # 第三方依赖（JS）
 ```
 
-## 数据存储
+## 💾 数据存储
 
 | 方式    | 配置值    | 说明       |
 | ------- | --------- | ---------- |
@@ -138,6 +176,6 @@ ENABLE_IP_PROXY = False    # 是否启用代理
 | MongoDB | `mongodb` | 灵活扩展   |
 | Excel   | `excel`   | 可视化分析 |
 
-## License
+## 📄 License
 
 MIT

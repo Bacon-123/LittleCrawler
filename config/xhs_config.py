@@ -1,18 +1,20 @@
+# -*- coding: utf-8 -*-
+"""
+小红书平台配置
+"""
 
-# 小红书平台配置
-
-# 排序方式，具体的枚举值在 infra/xhs/field.py中
+# 搜索结果排序方式（枚举值见 src/platforms/xhs/field.py）
+# 可选: general(综合) | popularity_descending(最热) | time_descending(最新)
 SORT_TYPE = "popularity_descending"
 
-# 指定笔记URL列表, 必须要携带xsec_token参数
+# 指定笔记 URL 列表（detail 模式使用）
+# 注意: URL 必须携带 xsec_token 参数
 XHS_SPECIFIED_NOTE_URL_LIST = [
-    "https://www.xiaohongshu.com/explore/64b95d01000000000c034587?xsec_token=AB0EFqJvINCkj6xOCKCQgfNNh8GdnBC_6XecG4QOddo3Q=&xsec_source=pc_cfeed"
-    # ........................
+    # 示例: "https://www.xiaohongshu.com/explore/xxx?xsec_token=xxx"
 ]
 
-# 指定创作者URL列表，需要携带xsec_token和xsec_source参数
-
+# 指定创作者 URL 列表（creator 模式使用）
+# 注意: URL 需携带 xsec_token 和 xsec_source 参数
 XHS_CREATOR_ID_LIST = [
-    "https://www.xiaohongshu.com/user/profile/5f58bd990000000001003753?xsec_token=ABYVg1evluJZZzpMX-VWzchxQ1qSNVW3r-jOEnKqMcgZw=&xsec_source=pc_search"
-    # ........................
+    # 示例: "https://www.xiaohongshu.com/user/profile/xxx?xsec_token=xxx&xsec_source=xxx"
 ]

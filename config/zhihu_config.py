@@ -1,15 +1,14 @@
+# -*- coding: utf-8 -*-
+"""
+知乎平台配置
+"""
 
-# 知乎平台配置
-
-# 指定知乎用户URL列表
+# 指定知乎用户主页 URL 列表（creator 模式使用）
 ZHIHU_CREATOR_URL_LIST = [
-    "https://www.zhihu.com/people/yd1234567",
-    # ........................
+    # 示例: "https://www.zhihu.com/people/xxx"
 ]
 
-# 指定知乎ID列表
+# 指定知乎内容 ID 列表（detail 模式使用）
 ZHIHU_SPECIFIED_ID_LIST = [
-    "https://www.zhihu.com/question/826896610/answer/4885821440",  # 回答
-    "https://zhuanlan.zhihu.com/p/673461588",  # 文章
-    "https://www.zhihu.com/zvideo/1539542068422144000",  # 视频
+    # 示例: "https://www.zhihu.com/question/xxx/answer/xxx"
 ]
