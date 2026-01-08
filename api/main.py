@@ -22,7 +22,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
-from .routers import auth_router, crawler_router, data_router, websocket_router
+from .routers import auth_router, crawler_router, data_router, websocket_router, publisher_router
 from .services.auth_service import init_user_db
 
 # 检查是否仅启动 API（不含前端）
@@ -51,6 +51,7 @@ app.include_router(auth_router, prefix="/api")
 app.include_router(crawler_router, prefix="/api")
 app.include_router(data_router, prefix="/api")
 app.include_router(websocket_router, prefix="/api")
+app.include_router(publisher_router, prefix="/api")
 
 # 初始化用户数据库（创建默认admin账号）
 init_user_db()

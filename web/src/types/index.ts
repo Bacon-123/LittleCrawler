@@ -100,3 +100,49 @@ export interface WSMessage {
   type: 'log' | 'status' | 'progress' | 'error';
   data: LogEntry | CrawlerTask | string;
 }
+
+// ========== 笔记发布相关类型 ==========
+
+// 话题信息
+export interface TopicInfo {
+  id: string;
+  name: string;
+  link: string;
+  type: string;
+}
+
+// 话题搜索响应
+export interface TopicSearchResponse {
+  topics: TopicInfo[];
+}
+
+// 上传图片响应
+export interface ImageUploadResponse {
+  file_id: string;
+  width: number;
+  height: number;
+  url: string;
+}
+
+// 发布笔记请求
+export interface PublishNoteRequest {
+  title: string;
+  desc: string;
+  image_ids: string[];
+  topic_ids?: string[];
+}
+
+// 发布笔记响应
+export interface PublishNoteResponse {
+  success: boolean;
+  note_id: string;
+  message: string;
+}
+
+// 发布器状态响应
+export interface PublisherStatusResponse {
+  available: boolean;
+  logged_in: boolean;
+  platform: string;
+  message: string;
+}

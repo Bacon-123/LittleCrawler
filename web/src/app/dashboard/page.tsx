@@ -66,6 +66,7 @@ import {
   HardDrive,
   Leaf,
   FileStack,
+  PenSquare,
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { crawlerApi, dataApi, getWsUrl } from '@/lib/api';
@@ -466,10 +467,10 @@ export default function DashboardPage() {
                 </DropdownTrigger>
                 <DropdownMenu>
                   <DropdownItem key="profile" startContent={<User className="w-4 h-4" />}>
-                    {t('profile')}
+                    {t('common.profile')}
                   </DropdownItem>
                   <DropdownItem key="settings" startContent={<Settings className="w-4 h-4" />}>
-                    {t('settings')}
+                    {t('common.settings')}
                   </DropdownItem>
                   <DropdownItem
                     key="logout"
@@ -478,7 +479,7 @@ export default function DashboardPage() {
                     startContent={<LogOut className="w-4 h-4" />}
                     onClick={handleLogout}
                   >
-                    {t('logout')}
+                    {t('common.logout')}
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
@@ -664,12 +665,14 @@ export default function DashboardPage() {
               </CardBody>
             </Card>
 
-            {/* 数据概览卡片 */}
-            <Card className="bg-white/5 backdrop-blur-xl border border-white/10">
-              <CardHeader className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center">
-                    <Database className="w-4 h-4 text-white" />
+            {/* 右侧区域：数据概览 + 发布模块 */}
+            <div className="space-y-6">
+              {/* 数据概览卡片 */}
+              <Card className="bg-white/5 backdrop-blur-xl border border-white/10">
+                <CardHeader className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center">
+                      <Database className="w-4 h-4 text-white" />
                   </div>
                   <div>
                     <h2 className="text-lg font-semibold text-white">{t('dashboard.dataStats')}</h2>
@@ -723,6 +726,78 @@ export default function DashboardPage() {
                 )}
               </CardBody>
             </Card>
+
+            {/* 发布模块卡片 */}
+            <Card className="bg-white/5 backdrop-blur-xl border border-white/10">
+              <CardHeader className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center">
+                    <PenSquare className="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-white">{t('publish.center')}</h2>
+                    <p className="text-xs text-gray-400">{t('publish.description')}</p>
+                  </div>
+                </div>
+              </CardHeader>
+              <Divider className="bg-white/10" />
+              <CardBody className="space-y-3">
+                {/* 小红书 */}
+                <Button
+                  className="w-full justify-start bg-gradient-to-r from-red-500/20 to-pink-500/20 hover:from-red-500/30 hover:to-pink-500/30 border border-red-500/30"
+                  variant="flat"
+                  startContent={
+                    <div className="w-6 h-6 rounded bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center">
+                      <BookOpen className="w-3.5 h-3.5 text-white" />
+                    </div>
+                  }
+                  onClick={() => router.push('/dashboard/publish')}
+                >
+                  <div className="flex-1 text-left">
+                    <div className="text-sm font-medium text-white">{t('publish.xhs')}</div>
+                    <div className="text-xs text-gray-400">{t('publish.xhsDesc')}</div>
+                  </div>
+                  <Chip size="sm" color="success" variant="flat">{t('publish.available')}</Chip>
+                </Button>
+
+                {/* 小黄鱼 */}
+                <Button
+                  className="w-full justify-start bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 opacity-60 cursor-not-allowed"
+                  variant="flat"
+                  isDisabled
+                  startContent={
+                    <div className="w-6 h-6 rounded bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center">
+                      <Leaf className="w-3.5 h-3.5 text-white" />
+                    </div>
+                  }
+                >
+                  <div className="flex-1 text-left">
+                    <div className="text-sm font-medium text-white">{t('publish.xhy')}</div>
+                    <div className="text-xs text-gray-400">{t('publish.xhyDesc')}</div>
+                  </div>
+                  <Chip size="sm" color="default" variant="flat">{t('publish.comingSoon')}</Chip>
+                </Button>
+
+                {/* 知乎 */}
+                <Button
+                  className="w-full justify-start bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-500/30 opacity-60 cursor-not-allowed"
+                  variant="flat"
+                  isDisabled
+                  startContent={
+                    <div className="w-6 h-6 rounded bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                      <MessageCircle className="w-3.5 h-3.5 text-white" />
+                    </div>
+                  }
+                >
+                  <div className="flex-1 text-left">
+                    <div className="text-sm font-medium text-white">{t('publish.zhihu')}</div>
+                    <div className="text-xs text-gray-400">{t('publish.zhihuDesc')}</div>
+                  </div>
+                  <Chip size="sm" color="default" variant="flat">{t('publish.comingSoon')}</Chip>
+                </Button>
+              </CardBody>
+            </Card>
+          </div>
           </div>
 
           {/* 数据表格 */}

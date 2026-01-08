@@ -39,7 +39,9 @@
     "todayData": "Today",
     "viewAll": "View All",
     "openLink": "Open Link",
-    "copyright": "LittleCrawler © 2025 - Multi-platform Social Media Crawler"
+    "copyright": "LittleCrawler © 2025 - Multi-platform Social Media Crawler",
+    "profile": "Profile",
+    "publishNote": "Publish Note"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -118,6 +120,18 @@
       "completed": "Completed",
       "error": "Error"
     }
+  },
+  "publish": {
+    "center": "Publish Center",
+    "description": "Publish notes to platforms",
+    "xhs": "Xiaohongshu",
+    "xhsDesc": "Publish image notes",
+    "xhy": "Xianyu",
+    "xhyDesc": "Publish products/notes",
+    "zhihu": "Zhihu",
+    "zhihuDesc": "Publish articles/answers",
+    "available": "Available",
+    "comingSoon": "Coming Soon"
   },
   "data": {
     "title": "Data Management",

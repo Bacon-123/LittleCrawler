@@ -7,11 +7,13 @@
 - crawler_router: 爬虫控制（启动、停止、状态）
 - data_router: 数据管理（文件列表、预览、下载）
 - websocket_router: WebSocket实时通信
+- publisher_router: 笔记发布（小红书）
 """
 
 from .auth import router as auth_router
 from .crawler import router as crawler_router
 from .data import router as data_router
 from .websocket import router as websocket_router
+from .publisher import router as publisher_router
 
-__all__ = ["auth_router", "crawler_router", "data_router", "websocket_router"]
+__all__ = ["auth_router", "crawler_router", "data_router", "websocket_router", "publisher_router"]

@@ -39,7 +39,9 @@
     "todayData": "今日新增",
     "viewAll": "查看全部",
     "openLink": "打开链接",
-    "copyright": "LittleCrawler © 2025 - 多平台社交媒体爬虫框架"
+    "copyright": "LittleCrawler © 2025 - 多平台社交媒体爬虫框架",
+    "profile": "个人资料",
+    "publishNote": "发布笔记"
   },
   "nav": {
     "dashboard": "仪表盘",
@@ -118,6 +120,18 @@
       "completed": "已完成",
       "error": "出错"
     }
+  },
+  "publish": {
+    "center": "发布中心",
+    "description": "发布笔记到各平台",
+    "xhs": "小红书",
+    "xhsDesc": "发布图文笔记",
+    "xhy": "小黄鱼",
+    "xhyDesc": "发布商品/笔记",
+    "zhihu": "知乎",
+    "zhihuDesc": "发布文章/回答",
+    "available": "可用",
+    "comingSoon": "待开发"
   },
   "data": {
     "title": "数据管理",
