@@ -104,8 +104,34 @@ STOP_WORDS_FILE = "./docs/hit_stopwords.txt"
 # 中文字体文件路径
 FONT_PATH = "./docs/STZHONGS.TTF"
 
-# 爬取间隔时间
+# 爬取间隔时间（原有配置，保留向后兼容）
 CRAWLER_MAX_SLEEP_SEC = 2
+
+# ==================== 模拟人工行为配置 ====================
+# 是否启用模拟人工行为
+# 启用后将使用随机延迟和多种行为模拟策略，提高爬取稳定性
+ENABLE_HUMAN_BEHAVIOR = True
+
+# 基础延迟区间 (秒) - 用于一般操作
+CRAWLER_MIN_SLEEP_SEC = 1.5
+CRAWLER_MAX_SLEEP_SEC_NEW = 3.0
+
+# 页面浏览延迟区间 (秒) - 模拟阅读时间，翻页等操作使用
+PAGE_VIEW_MIN_SEC = 2.0
+PAGE_VIEW_MAX_SEC = 5.0
+
+# 操作间隔延迟区间 (秒) - 模拟鼠标点击、滚动等操作
+ACTION_INTERVAL_MIN_SEC = 0.5
+ACTION_INTERVAL_MAX_SEC = 1.5
+
+# 会话休息配置 - 长时间运行后的休息间隔
+SESSION_BREAK_INTERVAL = 30  # 每执行30次操作后休息一次
+SESSION_BREAK_MIN_SEC = 10.0  # 休息最小时长（秒）
+SESSION_BREAK_MAX_SEC = 30.0  # 休息最大时长（秒）
+
+# 评论爬取延迟区间 (秒) - 爬取评论时的延迟
+COMMENT_CRAWL_MIN_SEC = 1.0
+COMMENT_CRAWL_MAX_SEC = 2.5
 
 from .xhs_config import *
 from .zhihu_config import *

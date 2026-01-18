@@ -24,6 +24,7 @@ from src.utils.cdp_browser import CDPBrowserManager
 from src.core.var import crawler_type_var, source_keyword_var
 
 from .client import XiaoHongShuClient
+from src.utils.human_behavior import HumanBehavior
 from .exception import DataFetchError
 from .field import SearchSortType
 from .help import parse_note_info_from_note_url, parse_creator_info_from_url, get_search_id
@@ -42,6 +43,7 @@ class XiaoHongShuCrawler(AbstractCrawler):
         self.user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
         self.cdp_manager = None
         self.ip_proxy_pool = None  # Proxy IP pool for automatic proxy refresh
+        self.human_behavior = HumanBehavior()
 
     async def start(self) -> None:
         playwright_proxy_format, httpx_proxy_format = None, None
@@ -157,7 +159,7 @@ class XiaoHongShuCrawler(AbstractCrawler):
                     await self.batch_get_note_comments(note_ids, xsec_tokens)
 
                     # Sleep after each page navigation
-                    await asyncio.sleep(config.CRAWLER_MAX_SLEEP_SEC)
+                    await self.human_behavior.page_view_delay()
                     utils.logger.info(f"[XiaoHongShuCrawler.search] Sleeping for {config.CRAWLER_MAX_SLEEP_SEC} seconds after page {page-1}")
                 except DataFetchError:
                     utils.logger.error("[XiaoHongShuCrawler.search] Get note detail error")
@@ -285,7 +287,7 @@ class XiaoHongShuCrawler(AbstractCrawler):
                 note_detail.update({"xsec_token": xsec_token, "xsec_source": xsec_source})
 
                 # Sleep after fetching note detail
-                await asyncio.sleep(config.CRAWLER_MAX_SLEEP_SEC)
+                await self.human_behavior.action_delay()
                 utils.logger.info(f"[get_note_detail_async_task] Sleeping for {config.CRAWLER_MAX_SLEEP_SEC} seconds after fetching note {note_id}")
 
                 return note_detail
@@ -319,7 +321,7 @@ class XiaoHongShuCrawler(AbstractCrawler):
         async with semaphore:
             utils.logger.info(f"[XiaoHongShuCrawler.get_comments] Begin get note id comments {note_id}")
             # Use fixed crawling interval
-            crawl_interval = config.CRAWLER_MAX_SLEEP_SEC
+            crawl_interval = self.human_behavior.get_random_delay(config.COMMENT_CRAWL_MIN_SEC, config.COMMENT_CRAWL_MAX_SEC)
             await self.xhs_client.get_note_all_comments(
                 note_id=note_id,
                 xsec_token=xsec_token,
@@ -329,7 +331,8 @@ class XiaoHongShuCrawler(AbstractCrawler):
             )
 
             # Sleep after fetching comments
-            await asyncio.sleep(crawl_interval)
+            await self.human_behavior.comment_crawl_delay()
+            # Skip the old sleep since we already delayed
             utils.logger.info(f"[XiaoHongShuCrawler.get_comments] Sleeping for {crawl_interval} seconds after fetching comments for note {note_id}")
 
     async def create_xhs_client(self, httpx_proxy: Optional[str]) -> XiaoHongShuClient:
