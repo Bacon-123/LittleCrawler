@@ -40,8 +40,6 @@ class CrawlerManager:
         self._project_root = Path(__file__).parent.parent.parent
         # 日志队列 - 用于推送到WebSocket
         self._log_queue: Optional[asyncio.Queue] = None
-        # UV 命令缓存 - "uv" 或 "python"（用于 python -m uv 回退）
-        self._uv_command: Optional[str] = None
 
     @property
     def logs(self) -> List[LogEntry]:
@@ -94,49 +92,6 @@ class CrawlerManager:
             return "debug"
         return "info"
 
-    async def _check_uv_command(self) -> str:
-        """
-        检测 uv 命令是否存在
-        返回: "uv" 或 "python"
-        """
-        # 先尝试直接用 uv
-        try:
-            process = await asyncio.create_subprocess_exec(
-                "uv", "--version",
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
-            )
-            await asyncio.wait_for(process.communicate(), timeout=5.0)
-            if process.returncode == 0:
-                entry = self._create_log_entry("Using uv command: uv", "info")
-                await self._push_log(entry)
-                return "uv"
-        except (FileNotFoundError, asyncio.TimeoutError):
-            pass
-
-        # 回退到 python -m uv
-        try:
-            process = await asyncio.create_subprocess_exec(
-                "python", "-m", "uv", "--version",
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
-            )
-            await asyncio.wait_for(process.communicate(), timeout=5.0)
-            if process.returncode == 0:
-                entry = self._create_log_entry("Using uv command: python -m uv", "info")
-                await self._push_log(entry)
-                return "python"
-        except (FileNotFoundError, asyncio.TimeoutError):
-            pass
-
-        # 都失败了，记录错误但返回 "uv"（让后续启动失败时给出明确错误）
-        entry = self._create_log_entry(
-            "Error: uv command not found. Please install uv or ensure python is available.",
-            "error"
-        )
-        await self._push_log(entry)
-        return "uv"
-
     async def start(self, config: CrawlerStartRequest) -> bool:
         """Start crawler process"""
         async with self._lock:
@@ -156,10 +111,6 @@ class CrawlerManager:
                         self._log_queue.get_nowait()
                 except asyncio.QueueEmpty:
                     pass
-
-            # 检测 uv 命令（仅首次或缓存为空时）
-            if self._uv_command is None:
-                self._uv_command = await self._check_uv_command()
 
             # Build command line arguments
             cmd = self._build_command(config)
@@ -256,11 +207,7 @@ class CrawlerManager:
 
     def _build_command(self, config: CrawlerStartRequest) -> list:
         """Build main.py command line arguments"""
-        # 根据检测结果构建命令
-        if self._uv_command == "python":
-            cmd = ["python", "-m", "uv", "run", "python", "main.py"]
-        else:
-            cmd = ["uv", "run", "python", "main.py"]
+        cmd = ["uv", "run", "python", "main.py"]
 
         cmd.extend(["--platform", config.platform.value])
         cmd.extend(["--lt", config.login_type.value])
