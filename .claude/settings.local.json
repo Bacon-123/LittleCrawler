@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(du:*)",
+      "Bash(sudo apt-get:*)",
+      "Bash(sudo apt:*)",
+      "Bash(pipx install:*)",
+      "Bash(/root/.local/bin/pipx install:*)",
+      "Bash(pipx:*)",
+      "Bash(/usr/bin/pipx:*)",
+      "Bash(export:*)",
+      "Bash(uv:*)",
+      "Bash(/home/claude/.local/share/pipx/venvs/uv/bin/uv:*)",
+      "Bash(python3:*)",
+      "Bash(command:*)",
+      "Bash(sudo ~/.local/bin/uv run python:*)",
+      "Bash(sqlite3:*)",
+      "Bash(pip3 install:*)",
+      "Bash(~/.local/bin/uvicorn:*)",
+      "Bash(curl:*)",
+      "Bash(ss:*)",
+      "Bash(ip:*)",
+      "Bash(git reset:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git config:*)",
+      "Bash(sudo git add:*)",
+      "Bash(sudo git commit:*)"
+    ]
+  }
+}

@@ -215,3 +215,9 @@ data/
 .cache/
 .codacy/
 
+# API UI build files (Next.js static export)
+api/ui/
+
+# Project docs (planning documents)
+docs/重构计划.md
+
