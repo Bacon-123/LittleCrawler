@@ -8,7 +8,7 @@
 - POST /publisher/publish - 发布笔记
 - GET /publisher/status - 获取发布器状态
 
-所有接口需要Bearer Token认证
+# 所有接口无需认证（前后端分离）
 """
 
 import base64
@@ -101,7 +101,7 @@ def set_publisher(publisher):
 # ========== API 端点 ==========
 
 @router.get("/status", response_model=PublisherStatusResponse, summary="获取发布器状态")
-async def get_publisher_status(current_user: dict = Depends(get_current_user)):
+async def get_publisher_status():
     """
     获取发布器当前状态
     
@@ -126,8 +126,7 @@ async def get_publisher_status(current_user: dict = Depends(get_current_user)):
 
 @router.post("/topic/search", response_model=TopicSearchResponse, summary="搜索话题")
 async def search_topic(
-    request: TopicSearchRequest,
-    current_user: dict = Depends(get_current_user)
+    request: TopicSearchRequest
 ):
     """
     搜索小红书话题
@@ -165,8 +164,7 @@ async def search_topic(
 
 @router.post("/upload", response_model=ImageUploadResponse, summary="上传图片")
 async def upload_image(
-    file: UploadFile = File(...),
-    current_user: dict = Depends(get_current_user)
+    file: UploadFile = File(...)
 ):
     """
     上传图片到小红书
@@ -230,8 +228,7 @@ async def upload_image(
 
 @router.post("/publish", response_model=PublishNoteResponse, summary="发布笔记")
 async def publish_note(
-    request: PublishNoteRequest,
-    current_user: dict = Depends(get_current_user)
+    request: PublishNoteRequest
 ):
     """
     发布图文笔记
@@ -311,8 +308,7 @@ async def publish_note(
 
 @router.delete("/upload/{file_id}", summary="删除已上传图片")
 async def delete_uploaded_image(
-    file_id: str,
-    current_user: dict = Depends(get_current_user)
+    file_id: str
 ):
     """
     删除已上传但未发布的图片

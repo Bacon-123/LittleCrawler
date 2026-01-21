@@ -1,4 +1,4 @@
-// 侧边栏导航组件
+// 侧边栏导航组件 - 简化版（无需认证）
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -6,15 +6,10 @@ import Link from "next/link";
 import {
   Bug,
   LayoutDashboard,
-  Webhook,
   Database,
-  ScrollText,
-  Settings,
-  LogOut,
 } from "lucide-react";
-import { Button, Tooltip } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/react";
 import { useI18n } from "@/contexts/I18nContext";
-import { useAuth } from "@/contexts/AuthContext";
 
 interface NavItem {
   key: string;
@@ -25,7 +20,6 @@ interface NavItem {
 export function Sidebar() {
   const pathname = usePathname();
   const { t } = useI18n();
-  const { logout, user } = useAuth();
 
   const navItems: NavItem[] = [
     {
@@ -34,19 +28,9 @@ export function Sidebar() {
       icon: <LayoutDashboard size={22} />,
     },
     {
-      key: "crawler",
-      href: "/dashboard/crawler",
-      icon: <Webhook size={22} />,
-    },
-    {
       key: "data",
       href: "/dashboard/data",
       icon: <Database size={22} />,
-    },
-    {
-      key: "logs",
-      href: "/dashboard/logs",
-      icon: <ScrollText size={22} />,
     },
   ];
 
@@ -96,24 +80,11 @@ export function Sidebar() {
         </ul>
       </nav>
 
-      {/* 底部用户区域 */}
+      {/* 底部版本信息 */}
       <div className="border-t border-divider p-4">
-        <div className="hidden lg:flex items-center justify-between mb-2">
-          <span className="text-sm text-default-500 truncate">
-            {user?.username}
-          </span>
-        </div>
-        <Tooltip content={t("common.logout")} placement="right">
-          <Button
-            isIconOnly
-            variant="light"
-            className="w-full lg:w-auto"
-            onClick={logout}
-          >
-            <LogOut size={20} />
-            <span className="hidden lg:inline ml-2">{t("common.logout")}</span>
-          </Button>
-        </Tooltip>
+        <p className="text-xs text-default-400 text-center lg:text-left">
+          LittleCrawler v1.0
+        </p>
       </div>
     </aside>
   );

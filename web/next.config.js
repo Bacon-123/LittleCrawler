@@ -1,13 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  distDir: 'out',
+  // output: 'export',  // 开发模式不需要静态导出
+  // distDir: 'out',    // 开发模式不需要
   trailingSlash: true,
   images: {
     unoptimized: true,
   },
   typescript: {
-    // 允许构建时忽略类型错误（静态导出的已知问题）
     ignoreBuildErrors: true,
   },
 };

@@ -2,16 +2,13 @@
 """
 数据管理路由模块
 
-提供爬取数据文件管理和数据库查询的API端点：
+提供爬取数据文件管理的API端点：
 - GET /data/files - 获取数据文件列表
 - GET /data/files/{path} - 预览文件内容
 - GET /data/download/{path} - 下载文件
 - GET /data/stats - 获取数据统计
-- GET /data/notes - 获取帖子列表（数据库）
-- GET /data/notes/{note_id} - 获取帖子详情（数据库）
-- GET /data/notes/{note_id}/comments - 获取帖子评论（数据库）
 
-# 所有接口无需认证（前后端分离）
+所有接口需要Bearer Token认证
 """
 
 import os
@@ -19,17 +16,10 @@ import json
 from pathlib import Path
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException, Depends, Query
+from fastapi import APIRouter, HTTPException, Depends
 from fastapi.responses import FileResponse
 
 from .auth import get_current_user
-from ..services.data_service import (
-    get_notes_list,
-    get_note_detail,
-    get_note_comments,
-    get_data_stats
-)
-from ..schemas.data import NoteListResponse, NoteDetail, CommentListResponse, DataStatsResponse
 
 router = APIRouter(prefix="/data", tags=["数据管理"])
 
@@ -72,7 +62,8 @@ def get_file_info(file_path: Path) -> dict:
 @router.get("/files", summary="获取文件列表")
 async def list_data_files(
     platform: Optional[str] = None,
-    file_type: Optional[str] = None
+    file_type: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
 ):
     """
     获取数据文件列表
@@ -118,7 +109,8 @@ async def list_data_files(
 async def get_file_content(
     file_path: str,
     preview: bool = True,
-    limit: int = 100
+    limit: int = 100,
+    current_user: dict = Depends(get_current_user)
 ):
     """
     获取文件内容或预览
@@ -197,7 +189,8 @@ async def get_file_content(
 
 @router.get("/download/{file_path:path}", summary="下载文件")
 async def download_file(
-    file_path: str
+    file_path: str,
+    current_user: dict = Depends(get_current_user)
 ):
     """
     下载数据文件
@@ -226,7 +219,7 @@ async def download_file(
 
 
 @router.get("/stats", summary="数据统计")
-async def get_file_data_stats():
+async def get_data_stats(current_user: dict = Depends(get_current_user)):
     """
     获取数据文件统计信息
     
@@ -269,82 +262,4 @@ async def get_file_data_stats():
             except Exception:
                 continue
 
-    return stats
-
-
-# ==================== 数据库查询 API ====================
-
-@router.get("/notes", response_model=NoteListResponse, summary="获取帖子列表")
-async def list_notes(
-    platform: str = Query("xhs", description="平台 (xhs/zhihu/xhy)"),
-    page: int = Query(1, ge=1, description="页码"),
-    page_size: int = Query(20, ge=1, le=100, description="每页数量"),
-    keyword: Optional[str] = Query(None, description="搜索关键词")
-):
-    """
-    从数据库获取帖子列表
-    
-    - **platform**: 平台选择 (xhs=小红书, zhihu=知乎)
-    - **page**: 页码，从1开始
-    - **page_size**: 每页数量，最大100
-    - **keyword**: 搜索关键词，搜索标题和描述
-    """
-    result = get_notes_list(
-        platform=platform,
-        page=page,
-        page_size=page_size,
-        keyword=keyword
-    )
-    return result
-
-
-@router.get("/notes/{note_id}", response_model=NoteDetail, summary="获取帖子详情")
-async def get_note_detail_api(
-    note_id: str,
-    platform: str = Query("xhs", description="平台 (xhs/zhihu/xhy)")
-):
-    """
-    从数据库获取帖子详情
-    
-    - **note_id**: 帖子ID
-    - **platform**: 平台选择
-    """
-    detail = get_note_detail(platform=platform, note_id=note_id)
-    if not detail:
-        raise HTTPException(status_code=404, detail="帖子不存在")
-    return detail
-
-
-@router.get("/notes/{note_id}/comments", response_model=CommentListResponse, summary="获取帖子评论")
-async def list_note_comments(
-    note_id: str,
-    platform: str = Query("xhs", description="平台 (xhs/zhihu/xhy)"),
-    page: int = Query(1, ge=1, description="页码"),
-    page_size: int = Query(50, ge=1, le=100, description="每页数量")
-):
-    """
-    从数据库获取帖子评论列表
-    
-    - **note_id**: 帖子ID
-    - **platform**: 平台选择
-    - **page**: 页码，从1开始
-    - **page_size**: 每页数量，最大100
-    """
-    result = get_note_comments(
-        platform=platform,
-        note_id=note_id,
-        page=page,
-        page_size=page_size
-    )
-    return result
-
-
-@router.get("/db-stats", response_model=DataStatsResponse, summary="获取数据库统计")
-async def get_database_stats():
-    """
-    获取数据库统计信息
-    
-    返回各平台的帖子和评论数量
-    """
-    stats = get_data_stats()
     return stats

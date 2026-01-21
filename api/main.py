@@ -22,7 +22,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
-from .routers import auth_router, crawler_router, data_router, websocket_router, publisher_router
+from .routers import crawler_router, data_router, websocket_router, publisher_router  # auth_router 已注释
 from .services.auth_service import init_user_db
 
 # 检查是否仅启动 API（不含前端）
@@ -47,14 +47,14 @@ app.add_middleware(
 )
 
 # 注册路由
-app.include_router(auth_router, prefix="/api")
+# app.include_router(auth_router, prefix="/api")  # 前后端分离，移除认证
 app.include_router(crawler_router, prefix="/api")
 app.include_router(data_router, prefix="/api")
 app.include_router(websocket_router, prefix="/api")
 app.include_router(publisher_router, prefix="/api")
 
 # 初始化用户数据库（创建默认admin账号）
-init_user_db()
+# init_user_db()  # 前后端分离，移除认证
 
 
 @app.get("/")
@@ -179,55 +179,55 @@ async def get_config_options():
 
 # Mount static resources - must be placed after all routes
 # 仅在非 API_ONLY 模式下挂载静态资源
-if not API_ONLY and os.path.exists(WEBUI_DIR):
+# if not API_ONLY and os.path.exists(WEBUI_DIR):
     # Mount _next directory for Next.js static assets
-    next_dir = os.path.join(WEBUI_DIR, "_next")
-    if os.path.exists(next_dir):
-        app.mount("/_next", StaticFiles(directory=next_dir), name="next-static")
+#     next_dir = os.path.join(WEBUI_DIR, "_next")
+#     if os.path.exists(next_dir):
+#         app.mount("/_next", StaticFiles(directory=next_dir), name="next-static")
     
     # Mount assets directory
-    assets_dir = os.path.join(WEBUI_DIR, "assets")
-    if os.path.exists(assets_dir):
-        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+#     assets_dir = os.path.join(WEBUI_DIR, "assets")
+#     if os.path.exists(assets_dir):
+#         app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
     
     # Mount logos directory
-    logos_dir = os.path.join(WEBUI_DIR, "logos")
-    if os.path.exists(logos_dir):
-        app.mount("/logos", StaticFiles(directory=logos_dir), name="logos")
+#     logos_dir = os.path.join(WEBUI_DIR, "logos")
+#     if os.path.exists(logos_dir):
+#         app.mount("/logos", StaticFiles(directory=logos_dir), name="logos")
 
 
 # Catch-all route for SPA - must be at the very end
-@app.get("/{full_path:path}")
-async def serve_spa(full_path: str):
-    """
-    SPA 路由处理
-    对于非API请求，返回对应的HTML页面或index.html
-    API_ONLY 模式下直接返回 404
-    """
+# @app.get("/{full_path:path}")
+# async def serve_spa(full_path: str):
+#     """
+#     SPA 路由处理
+#     对于非API请求，返回对应的HTML页面或index.html
+#     API_ONLY 模式下直接返回 404
+#     """
     # Skip API routes
-    if full_path.startswith("api/"):
-        return {"error": "Not found"}
+#     if full_path.startswith("api/"):
+#         return {"error": "Not found"}
     
     # API_ONLY 模式下不提供前端页面
-    if API_ONLY:
-        return {"error": "Not found", "mode": "API only"}
+#     if API_ONLY:
+#         return {"error": "Not found", "mode": "API only"}
     
     # Try to serve the specific page
-    page_path = os.path.join(WEBUI_DIR, full_path, "index.html")
-    if os.path.exists(page_path):
-        return FileResponse(page_path)
+#     page_path = os.path.join(WEBUI_DIR, full_path, "index.html")
+#     if os.path.exists(page_path):
+#         return FileResponse(page_path)
     
     # Fallback to main index.html
-    index_path = os.path.join(WEBUI_DIR, "index.html")
-    if os.path.exists(index_path):
-        return FileResponse(index_path)
+#     index_path = os.path.join(WEBUI_DIR, "index.html")
+#     if os.path.exists(index_path):
+#         return FileResponse(index_path)
     
-    return {
-        "message": "LittleCrawler API",
-        "version": "v1.0.0",
-        "docs": "/docs",
-        "note": "前端页面未构建，请先运行: cd web && npm install && npm run build"
-    }
+#     return {
+#         "message": "LittleCrawler API",
+#         "version": "v1.0.0",
+#         "docs": "/docs",
+#         "note": "前端页面未构建，请先运行: cd web && npm install && npm run build"
+#     }
 
 
 if __name__ == "__main__":

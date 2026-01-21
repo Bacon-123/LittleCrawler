@@ -8,7 +8,7 @@
 - GET /crawler/status - 获取爬虫状态
 - GET /crawler/logs - 获取运行日志
 
-所有接口需要Bearer Token认证
+# 所有接口无需认证（前后端分离）
 """
 
 from fastapi import APIRouter, HTTPException, Depends
@@ -22,8 +22,7 @@ router = APIRouter(prefix="/crawler", tags=["爬虫控制"])
 
 @router.post("/start", summary="启动爬虫")
 async def start_crawler(
-    request: CrawlerStartRequest,
-    current_user: dict = Depends(get_current_user)
+    request: CrawlerStartRequest
 ):
     """
     启动爬虫任务
@@ -43,7 +42,7 @@ async def start_crawler(
 
 
 @router.post("/stop", summary="停止爬虫")
-async def stop_crawler(current_user: dict = Depends(get_current_user)):
+async def stop_crawler():
     """
     停止当前运行的爬虫任务
     
@@ -60,7 +59,7 @@ async def stop_crawler(current_user: dict = Depends(get_current_user)):
 
 
 @router.get("/status", response_model=CrawlerStatusResponse, summary="获取状态")
-async def get_crawler_status(current_user: dict = Depends(get_current_user)):
+async def get_crawler_status():
     """
     获取爬虫当前运行状态
     
@@ -70,7 +69,7 @@ async def get_crawler_status(current_user: dict = Depends(get_current_user)):
 
 
 @router.get("/logs", summary="获取日志")
-async def get_logs(limit: int = 100, current_user: dict = Depends(get_current_user)):
+async def get_logs(limit: int = 100):
     """
     获取最近的运行日志
     
